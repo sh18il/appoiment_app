@@ -1,11 +1,16 @@
+import 'package:appoiment_app/controller/auth/login_controller.dart';
+import 'package:appoiment_app/service/auth.dart';
+import 'package:appoiment_app/view/boking_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<LoginController>(context);
     return Scaffold(
       backgroundColor: Colors.white,
       bottomSheet: MediaQuery.of(context).viewInsets.bottom == 0
@@ -92,6 +97,8 @@ class LoginScreen extends StatelessWidget {
                 ),
                 Gap(10),
                 TextFormField(
+                  controller: provider.usernameController,
+                  keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
                     hintText: 'Enter your email',
                     border: OutlineInputBorder(
@@ -114,6 +121,8 @@ class LoginScreen extends StatelessWidget {
                 ),
                 Gap(10),
                 TextFormField(
+                  controller: provider.passwordController,
+                  keyboardType: TextInputType.visiblePassword,
                   obscureText: true,
                   decoration: InputDecoration(
                     hintText: 'Enter your password',
@@ -127,7 +136,13 @@ class LoginScreen extends StatelessWidget {
                   width: double.infinity,
                   height: 50,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      login(
+                        provider.usernameController.text,
+                        provider.passwordController.text,
+                        context,
+                      );
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFF006837),
                       shape: RoundedRectangleBorder(
@@ -147,5 +162,29 @@ class LoginScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  login(email, password, context) async {
+    await Login.login(email, password)
+        .then((value) async {
+          await TokenManager.saveToken(value);
+          print('Token saved: $value');
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => BokingScreen()),
+          );
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: Colors.green,
+              content: Text('Login Successful'),
+            ),
+          );
+        })
+        .catchError((error) {
+          print('Login error: $error');
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text('Login Failed: $error')));
+        });
   }
 }

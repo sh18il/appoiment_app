@@ -1,5 +1,8 @@
+import 'package:appoiment_app/controller/auth/login_controller.dart';
+import 'package:appoiment_app/controller/pationt_controller.dart';
 import 'package:appoiment_app/view/splash_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -8,13 +11,18 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => LoginController()),
+        ChangeNotifierProvider(create: (_) => PationtController()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
 
-      home: const SplashScreen(),
+        home: const SplashScreen(),
+      ),
     );
   }
 }

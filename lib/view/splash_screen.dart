@@ -1,4 +1,6 @@
+import 'package:appoiment_app/service/auth.dart';
 import 'package:appoiment_app/view/auth/login_screen.dart';
+import 'package:appoiment_app/view/boking_screen.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -18,9 +20,18 @@ class SplashScreen extends StatelessWidget {
 }
 
 Future<void> navigateToNextScreen(BuildContext context) async {
-  await Future.delayed(const Duration(seconds: 3));
-  Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => const LoginScreen()),
-  );
+  TokenManager.getToken().then((token) async {
+    if (token != null && token.isNotEmpty) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const BokingScreen()),
+      );
+    } else {
+      await Future.delayed(const Duration(seconds: 3));
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginScreen()),
+      );
+    }
+  });
 }
