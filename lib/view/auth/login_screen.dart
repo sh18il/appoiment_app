@@ -48,118 +48,131 @@ class LoginScreen extends StatelessWidget {
               ),
             )
           : null,
-      body: Column(
-        children: [
-          Container(
-            width: double.infinity,
-            height: 300,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/images/image.png'),
-                fit: BoxFit.cover,
-              ),
-            ),
-            child: Image.asset(
-              'assets/images/image copy.png',
-              width: 40,
-              height: 40,
-            ),
-          ),
-          Container(
-            alignment: Alignment.centerLeft,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 20, top: 30),
-              child: Text(
-                "Login or register to book \n your appointments",
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              width: double.infinity,
+              height: 300,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/images/image.png'),
+                  fit: BoxFit.cover,
                 ),
               ),
+              child: Image.asset(
+                'assets/images/image copy.png',
+                width: 40,
+                height: 40,
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      "Email",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w300,
-                      ),
-                      textAlign: TextAlign.left,
-                    ),
-                  ],
-                ),
-                Gap(10),
-                TextFormField(
-                  controller: provider.usernameController,
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(
-                    hintText: 'Enter your email',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
+            Container(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 20, top: 30),
+                child: Text(
+                  "Login or register to book \n your appointments",
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black,
                   ),
                 ),
-                Gap(20),
-                Row(
-                  children: [
-                    Text(
-                      "Password",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w300,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        "Email",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w300,
+                        ),
+                        textAlign: TextAlign.left,
                       ),
-                      textAlign: TextAlign.left,
-                    ),
-                  ],
-                ),
-                Gap(10),
-                TextFormField(
-                  controller: provider.passwordController,
-                  keyboardType: TextInputType.visiblePassword,
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    hintText: 'Enter your password',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
+                    ],
                   ),
-                ),
-                Gap(50),
-                SizedBox(
-                  width: double.infinity,
-                  height: 50,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      login(
-                        provider.usernameController.text,
-                        provider.passwordController.text,
-                        context,
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF006837),
-                      shape: RoundedRectangleBorder(
+                  Gap(10),
+                  TextFormField(
+                    controller: provider.usernameController,
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: InputDecoration(
+                      hintText: 'Enter your email',
+                      border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-                    child: Text(
-                      'Login',
-                      style: TextStyle(fontSize: 18, color: Colors.white),
+                  ),
+                  Gap(20),
+                  Row(
+                    children: [
+                      Text(
+                        "Password",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w300,
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
+                    ],
+                  ),
+                  Gap(10),
+                  TextFormField(
+                    controller: provider.passwordController,
+                    keyboardType: TextInputType.visiblePassword,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      hintText: 'Enter your password',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                     ),
                   ),
-                ),
-                Gap(20),
-              ],
+                  Gap(50),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 50,
+                    child: provider.isLoading
+                        ? Center(
+                            child: CircularProgressIndicator(
+                              color: Color(0xFF006837),
+                            ),
+                          )
+                        : ElevatedButton(
+                            onPressed: () async {
+                              provider.setLoading(true);
+                              await login(
+                                provider.usernameController.text,
+                                provider.passwordController.text,
+                                context,
+                              );
+                              provider.setLoading(false);
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xFF006837),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            child: Text(
+                              'Login',
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                  ),
+                  Gap(20),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -171,7 +184,7 @@ class LoginScreen extends StatelessWidget {
           print('Token saved: $value');
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => BokingScreen()),
+            MaterialPageRoute(builder: (context) => BookingScreen()),
           );
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(

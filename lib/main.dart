@@ -1,5 +1,7 @@
 import 'package:appoiment_app/controller/auth/login_controller.dart';
 import 'package:appoiment_app/controller/pationt_controller.dart';
+import 'package:appoiment_app/controller/reatment_controller.dart';
+import 'package:appoiment_app/controller/registration_controller.dart';
 import 'package:appoiment_app/view/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -17,6 +19,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => LoginController()),
         ChangeNotifierProvider(create: (_) => PationtController()),
+        ChangeNotifierProvider(create: (_) => TreatmentProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -1,12 +1,11 @@
 import 'dart:convert';
 
 import 'package:appoiment_app/service/core.dart';
+import 'package:appoiment_app/service/dio_client.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Login {
-  static Dio dio = Dio();
-
   static Future<String> login(String username, String password) async {
     final response = await dio.post(
       ApiConfig.baseUrl + '/api/Login',
