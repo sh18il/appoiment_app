@@ -9,12 +9,14 @@ class TreatmentRecord {
   final int male;
   final int female;
   final DateTime date;
+    final int id;
 
   TreatmentRecord({
     required this.treatmentName,
     required this.male,
     required this.female,
     required this.date,
+    required this.id,
   });
 
   int get total => male + female;

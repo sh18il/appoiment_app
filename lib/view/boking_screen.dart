@@ -53,6 +53,8 @@ class BookingScreen extends StatelessWidget {
             )
           : null,
       appBar: AppBar(
+        toolbarHeight: 120,
+        elevation: 0,
         backgroundColor: Colors.white,
         actions: [
           IconButton(
@@ -69,6 +71,19 @@ class BookingScreen extends StatelessWidget {
           },
           icon: Icon(Icons.logout),
         ),
+title:TextField(
+          decoration: InputDecoration(
+            hintText: 'Search',
+            prefixIcon: Icon(Icons.search),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide.none,
+            ),
+            filled: true,
+            fillColor: Colors.grey.shade200,
+          ),
+),
+       
       ),
       body: Consumer<PationtController>(
         builder: (context, controller, child) {

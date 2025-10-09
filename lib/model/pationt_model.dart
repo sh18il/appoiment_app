@@ -33,19 +33,40 @@ class Patient {
   });
 
   factory Patient.fromJson(Map<String, dynamic> json) {
-
     final random = Random();
-    final bookedDate = DateTime.now().subtract(Duration(days: random.nextInt(30)));
-    final treatmentDate = bookedDate.add(Duration(days: 1 + random.nextInt(10)));
+    final bookedDate = DateTime.now().subtract(
+      Duration(days: random.nextInt(30)),
+    );
+    final treatmentDate = bookedDate.add(
+      Duration(days: 1 + random.nextInt(10)),
+    );
 
     // Simulated treatments
     final bookedTreatments = [
-      TreatmentBooking(name: 'Panchakarma', price: 230, maleCount: 4, femaleCount: 4),
-      TreatmentBooking(name: 'Njavara Kizhi Treatment', price: 230, maleCount: 4, femaleCount: 4),
-      TreatmentBooking(name: 'Panchakarma', price: 230, maleCount: 4, femaleCount: 6),
+      TreatmentBooking(
+        name: 'Panchakarma',
+        price: 230,
+        maleCount: 4,
+        femaleCount: 4,
+      ),
+      TreatmentBooking(
+        name: 'Njavara Kizhi Treatment',
+        price: 230,
+        maleCount: 4,
+        femaleCount: 4,
+      ),
+      TreatmentBooking(
+        name: 'Panchakarma',
+        price: 230,
+        maleCount: 4,
+        femaleCount: 6,
+      ),
     ];
 
-    double calculatedTotal = bookedTreatments.fold(0.0, (sum, t) => sum + (t.price * (t.maleCount + t.femaleCount)));
+    double calculatedTotal = bookedTreatments.fold(
+      0.0,
+      (sum, t) => sum + (t.price * (t.maleCount + t.femaleCount)),
+    );
 
     // Simulated financial details
     double simDiscount = 500.0;
@@ -66,17 +87,20 @@ class Patient {
     );
   }
 }
+
 class TreatmentBooking {
   final String name;
   final double price;
   final int maleCount;
   final int femaleCount;
+  final int id;
 
   TreatmentBooking({
     required this.name,
     required this.price,
     required this.maleCount,
     required this.femaleCount,
+    this.id = 0,
   });
 
   double get total => price * (maleCount + femaleCount);
